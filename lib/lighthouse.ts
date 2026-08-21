@@ -1,5 +1,6 @@
 import lighthouse from "lighthouse";
 import * as chromeLauncher from "chrome-launcher";
+import { chromium } from "playwright";
 import type { Finding } from "@/lib/types";
 
 const CATEGORY_MAP = {
@@ -10,7 +11,11 @@ const CATEGORY_MAP = {
 } as const;
 
 export async function runLighthouse(url: string) {
-  const chrome = await chromeLauncher.launch({ chromeFlags: ["--headless", "--no-sandbox"] });
+  const chrome = await chromeLauncher.launch({
+    chromePath: chromium.executablePath(),
+    chromeFlags: ["--headless", "--no-sandbox", "--disable-dev-shm-usage"]
+  });
+
   try {
     const result = await lighthouse(url, {
       port: chrome.port,
@@ -32,10 +37,12 @@ export async function runLighthouse(url: string) {
       .slice(0, 12)
       .map((audit) => ({
         id: `lh-${audit.id}`,
-        category: audit.id.includes("seo") ? "seo" : "performance",
+        category: audit.group === "seo-content" || audit.group === "seo-crawl" ? "seo" : "performance",
         title: audit.title,
         summary: audit.description?.replace(/\[[^\]]+\]\([^\)]+\)/g, "").trim() || "Automated audit identified an issue.",
-        recommendation: audit.displayValue ? `Address this audit finding. Current result: ${audit.displayValue}.` : "Address this audit finding and re-run the assessment.",
+        recommendation: audit.displayValue
+          ? `Address this audit finding. Current result: ${audit.displayValue}.`
+          : "Address this audit finding and re-run the assessment.",
         severity: (audit.score ?? 1) < 0.5 ? "high" : "medium",
         scoreImpact: Math.round((1 - (audit.score ?? 1)) * 20),
         evidence: { displayValue: audit.displayValue, numericValue: audit.numericValue }
