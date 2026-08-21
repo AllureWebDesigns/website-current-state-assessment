@@ -11,6 +11,7 @@ export const runtime = "nodejs";
 export const maxDuration = 60;
 
 const schema = z.object({ url: z.string().min(3).max(2048) });
+type ToolStatus = Record<string, { enabled: boolean; ok: boolean; message?: string }>;
 
 export async function POST(request: NextRequest) {
   try {
@@ -34,7 +35,7 @@ export async function POST(request: NextRequest) {
       { category: "ux", score: null }
     ];
 
-    const toolStatus = {
+    const toolStatus: ToolStatus = {
       lighthouse: { enabled: true, ok: lighthouseResult.status === "fulfilled" },
       accessibility: { enabled: true, ok: browserResult.status === "fulfilled" },
       browser: { enabled: true, ok: browserResult.status === "fulfilled" },
