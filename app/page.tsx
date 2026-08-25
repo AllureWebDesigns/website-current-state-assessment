@@ -11,6 +11,21 @@ const severityLabel: Record<Severity, string> = {
   info: "Info"
 };
 
+type AssessmentCategory = AssessmentResult["categoryScores"][number]["category"];
+
+const categoryLabel: Record<AssessmentCategory, string> = {
+  performance: "Performance",
+  seo: "Technical SEO",
+  accessibility: "Accessibility",
+  security: "Security",
+  "best-practices": "Best Practices",
+  ux: "UX"
+};
+
+const categoryNote: Partial<Record<AssessmentCategory, string>> = {
+  seo: "Automated technical SEO fundamentals for the assessed page. This does not measure rankings, keyword strategy, authority, or overall organic search performance."
+};
+
 export default function HomePage() {
   const [url, setUrl] = useState("");
   const [result, setResult] = useState<AssessmentResult | null>(null);
@@ -44,7 +59,7 @@ export default function HomePage() {
       <section className="hero">
         <p className="eyebrow">Website Current State Assessment</p>
         <h1>Turn a website URL into a prioritized client assessment.</h1>
-        <p className="lede">Performance, SEO, accessibility, security posture, and conversion-oriented UX signals in one report.</p>
+        <p className="lede">Performance, technical SEO, accessibility, security posture, and conversion-oriented UX signals in one report.</p>
 
         <form onSubmit={submit} className="auditForm">
           <input
@@ -75,8 +90,9 @@ export default function HomePage() {
           <div className="scoreGrid">
             {result.categoryScores.map((item) => (
               <article className="scoreCard" key={item.category}>
-                <p>{item.category.replace("-", " ")}</p>
+                <p>{categoryLabel[item.category]}</p>
                 <strong>{item.score === null ? "N/A" : `${item.score}/100`}</strong>
+                {categoryNote[item.category] && <small className="scoreNote">{categoryNote[item.category]}</small>}
               </article>
             ))}
           </div>
@@ -108,7 +124,7 @@ export default function HomePage() {
                 <section className="finding" key={finding.id}>
                   <div className="findingMeta">
                     <span className={`severity severity-${finding.severity}`}>{severityLabel[finding.severity]}</span>
-                    <span>{finding.category}</span>
+                    <span>{categoryLabel[finding.category]}</span>
                   </div>
                   <h3>{finding.title}</h3>
                   <p>{finding.summary}</p>
