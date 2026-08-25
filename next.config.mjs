@@ -7,7 +7,10 @@ const nextConfig = {
       "playwright",
       "@axe-core/playwright",
       "axe-core"
-    ]
+    ],
+    outputFileTracingIncludes: {
+      "/api/audit": ["./node_modules/lighthouse/shared/localization/locales/**/*"]
+    }
   }
 };
 
