@@ -1,0 +1,30 @@
+{
+  "name": "website-current-state-assessment",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@axe-core/playwright": "^4.10.2",
+    "chrome-launcher": "^1.0.0",
+    "lighthouse": "^12.2.1",
+    "next": "^14.2.31",
+    "playwright": "^1.55.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.16.1",
+    "@types/react": "^18.3.4",
+    "@types/react-dom": "^18.3.0",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "^14.2.31",
+    "typescript": "^5.5.4"
+  }
+}
