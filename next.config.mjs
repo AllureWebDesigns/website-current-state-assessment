@@ -9,7 +9,13 @@ const nextConfig = {
       "axe-core"
     ],
     outputFileTracingIncludes: {
-      "/api/audit": ["./node_modules/lighthouse/shared/localization/locales/**/*"]
+      "/api/audit": [
+        "./node_modules/lighthouse/shared/localization/locales/**/*",
+        "./node_modules/lighthouse/report/assets/**/*",
+        "./node_modules/lighthouse/flow-report/assets/**/*",
+        "./node_modules/lighthouse/dist/report/**/*",
+        "./node_modules/axe-core/axe.min.js"
+      ]
     }
   }
 };
