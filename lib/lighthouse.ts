@@ -10,6 +10,8 @@ const CATEGORY_MAP = {
   "best-practices": "best-practices"
 } as const;
 
+type LighthouseCategory = keyof typeof CATEGORY_MAP;
+
 export async function runLighthouse(url: string) {
   const chrome = await chromeLauncher.launch({
     chromePath: chromium.executablePath(),
@@ -27,14 +29,17 @@ export async function runLighthouse(url: string) {
     if (!result?.lhr) throw new Error("Lighthouse did not return a report.");
 
     const lhr = result.lhr;
+    const categoryKeys = Object.keys(CATEGORY_MAP) as LighthouseCategory[];
     const scores = Object.fromEntries(
-      Object.keys(CATEGORY_MAP).map((key) => [key, Math.round((lhr.categories[key]?.score ?? 0) * 100)])
+      categoryKeys.map((key) => [key, Math.round((lhr.categories[key]?.score ?? 0) * 100)])
     );
 
     const categoryByAuditId = new Map<string, Finding["category"]>();
 
-    for (const [lighthouseCategory, findingCategory] of Object.entries(CATEGORY_MAP)) {
+    for (const lighthouseCategory of categoryKeys) {
       const category = lhr.categories[lighthouseCategory];
+      const findingCategory = CATEGORY_MAP[lighthouseCategory];
+
       for (const auditRef of category?.auditRefs ?? []) {
         if (!categoryByAuditId.has(auditRef.id)) {
           categoryByAuditId.set(auditRef.id, findingCategory);
