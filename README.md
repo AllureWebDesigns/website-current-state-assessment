@@ -75,3 +75,13 @@ For prospecting or client work, only assess domains you are authorized to test.
 - Branded PDF/client report export
 - Historical comparisons and before/after scoring
 - Assessment persistence and client dashboard
+
+## Validation
+
+Before merging changes, run:
+
+```bash
+npm run typecheck
+npm run lint
+npm run build
+```
