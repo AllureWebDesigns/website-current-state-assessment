@@ -35,10 +35,13 @@ export async function POST(request: NextRequest) {
       { category: "ux", score: null }
     ];
 
+    const browserCompleted = browserResult.status === "fulfilled";
+    const accessibilityCompleted = browserCompleted && browserResult.value.accessibilityOk;
+
     const toolStatus: ToolStatus = {
       lighthouse: { enabled: true, ok: lighthouseResult.status === "fulfilled" },
-      accessibility: { enabled: true, ok: browserResult.status === "fulfilled" },
-      browser: { enabled: true, ok: browserResult.status === "fulfilled" },
+      accessibility: { enabled: true, ok: accessibilityCompleted },
+      browser: { enabled: true, ok: browserCompleted },
       securityHeaders: { enabled: true, ok: securityResult.status === "fulfilled" },
       nuclei: { enabled: false, ok: false, message: "Active vulnerability scanning is disabled by default." },
       sitespeed: { enabled: false, ok: false, message: "Optional deep performance adapter not enabled in the MVP." }
@@ -59,6 +62,9 @@ export async function POST(request: NextRequest) {
       metadata = browserResult.value.metadata;
       scores.find((s) => s.category === "accessibility")!.score = browserResult.value.accessibilityScore;
       scores.find((s) => s.category === "ux")!.score = browserResult.value.uxScore;
+      if (browserResult.value.accessibilityMessage) {
+        toolStatus.accessibility.message = browserResult.value.accessibilityMessage;
+      }
     } else {
       const message = browserResult.reason instanceof Error ? browserResult.reason.message : "Browser audit failed.";
       toolStatus.accessibility.message = message;
