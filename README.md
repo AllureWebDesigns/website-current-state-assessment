@@ -1,6 +1,6 @@
 # Website Current State Assessment
 
-A client-facing website assessment platform for performance, SEO, accessibility, security posture, and UX review.
+A client-facing website assessment platform for performance, technical SEO, accessibility, security posture, and UX review.
 
 The application combines automated evidence collection with a normalized scoring and recommendation layer so technical findings can be translated into prioritized business actions.
 
@@ -8,7 +8,7 @@ The application combines automated evidence collection with a normalized scoring
 
 The assessment currently includes:
 
-- Lighthouse performance, SEO, accessibility, and best-practices scoring
+- Lighthouse performance, technical SEO, accessibility, and best-practices scoring
 - axe-core accessibility findings
 - Playwright browser inspection and homepage screenshot capture
 - Conversion-oriented UX heuristics such as H1 structure, navigation, CTA presence, responsive viewport configuration, and basic content depth
@@ -17,6 +17,12 @@ The assessment currently includes:
 - Severity-based prioritization of findings
 - Graceful partial results when one audit component fails
 - Public-target validation to reject obvious private and loopback destinations
+
+### Technical SEO score scope
+
+The current Technical SEO score is based on automated Lighthouse checks for the assessed page. It measures technical SEO fundamentals such as crawlability and baseline page configuration. It does not represent overall organic search performance and does not measure rankings, keyword strategy, topical authority, backlink authority, Search Console performance, or site-wide content quality.
+
+A broader SEO assessment can be added in a later phase using multi-page crawling, content and internal-link analysis, structured-data checks, and first-party search performance data.
 
 Active vulnerability scanning is intentionally disabled by default. Nuclei can be added later as an explicitly authorized assessment mode. A deeper sitespeed.io adapter is also reserved for the next phase.
 
@@ -61,6 +67,7 @@ For prospecting or client work, only assess domains you are authorized to test.
 
 - Multi-page crawl and page sampling
 - Structured technology detection
+- Broader SEO analysis beyond Lighthouse technical checks
 - Deeper Core Web Vitals and waterfall analysis
 - Authorized Nuclei integration
 - AI-assisted screenshot and conversion review
