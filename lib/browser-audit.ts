@@ -4,7 +4,8 @@ import type { Finding } from "@/lib/types";
 
 export async function runBrowserAudit(url: string) {
   const browser = await chromium.launch({ headless: true });
-  const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+  const context = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
+  const page = await context.newPage();
 
   try {
     await page.goto(url, { waitUntil: "domcontentloaded", timeout: 30_000 });
@@ -94,6 +95,7 @@ export async function runBrowserAudit(url: string) {
       findings: [...accessibilityFindings, ...uxFindings]
     };
   } finally {
+    await context.close();
     await browser.close();
   }
 }
