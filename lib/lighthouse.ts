@@ -31,13 +31,24 @@ export async function runLighthouse(url: string) {
       Object.keys(CATEGORY_MAP).map((key) => [key, Math.round((lhr.categories[key]?.score ?? 0) * 100)])
     );
 
+    const categoryByAuditId = new Map<string, Finding["category"]>();
+
+    for (const [lighthouseCategory, findingCategory] of Object.entries(CATEGORY_MAP)) {
+      const category = lhr.categories[lighthouseCategory];
+      for (const auditRef of category?.auditRefs ?? []) {
+        if (!categoryByAuditId.has(auditRef.id)) {
+          categoryByAuditId.set(auditRef.id, findingCategory);
+        }
+      }
+    }
+
     const findings: Finding[] = Object.values(lhr.audits)
       .filter((audit) => audit.scoreDisplayMode !== "notApplicable" && typeof audit.score === "number" && audit.score < 0.9)
       .sort((a, b) => (a.score ?? 1) - (b.score ?? 1))
       .slice(0, 12)
       .map((audit) => ({
         id: `lh-${audit.id}`,
-        category: audit.group === "seo-content" || audit.group === "seo-crawl" ? "seo" : "performance",
+        category: categoryByAuditId.get(audit.id) ?? "performance",
         title: audit.title,
         summary: audit.description?.replace(/\[[^\]]+\]\([^\)]+\)/g, "").trim() || "Automated audit identified an issue.",
         recommendation: audit.displayValue
