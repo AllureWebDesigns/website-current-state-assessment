@@ -8,7 +8,7 @@ import { buildAssessment } from "@/lib/scoring";
 import type { CategoryScore, Finding } from "@/lib/types";
 
 export const runtime = "nodejs";
-export const maxDuration = 60;
+export const maxDuration = 120;
 
 const schema = z.object({ url: z.string().min(3).max(2048) });
 type ToolStatus = Record<string, { enabled: boolean; ok: boolean; message?: string }>;
