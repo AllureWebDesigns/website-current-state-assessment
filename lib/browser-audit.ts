@@ -1,9 +1,9 @@
-import { chromium } from "playwright";
 import AxeBuilder from "@axe-core/playwright";
+import { launchChromium } from "@/lib/browser-runtime";
 import type { Finding } from "@/lib/types";
 
 export async function runBrowserAudit(url: string) {
-  const browser = await chromium.launch({ headless: true });
+  const browser = await launchChromium();
   const context = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
   const page = await context.newPage();
 

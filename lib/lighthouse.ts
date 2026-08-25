@@ -1,6 +1,6 @@
 import lighthouse from "lighthouse";
 import * as chromeLauncher from "chrome-launcher";
-import { chromium } from "playwright";
+import { getChromeLaunchOptions } from "@/lib/browser-runtime";
 import type { Finding } from "@/lib/types";
 
 const CATEGORY_MAP = {
@@ -13,9 +13,10 @@ const CATEGORY_MAP = {
 type LighthouseCategory = keyof typeof CATEGORY_MAP;
 
 export async function runLighthouse(url: string) {
+  const { chromePath, chromeFlags } = await getChromeLaunchOptions();
   const chrome = await chromeLauncher.launch({
-    chromePath: chromium.executablePath(),
-    chromeFlags: ["--headless", "--no-sandbox", "--disable-dev-shm-usage"]
+    chromePath,
+    chromeFlags
   });
 
   try {

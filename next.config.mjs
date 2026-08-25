@@ -5,6 +5,8 @@ const nextConfig = {
       "lighthouse",
       "chrome-launcher",
       "playwright",
+      "playwright-core",
+      "@sparticuz/chromium",
       "@axe-core/playwright",
       "axe-core"
     ],
@@ -14,7 +16,8 @@ const nextConfig = {
         "./node_modules/lighthouse/report/assets/**/*",
         "./node_modules/lighthouse/flow-report/assets/**/*",
         "./node_modules/lighthouse/dist/report/**/*",
-        "./node_modules/axe-core/axe.min.js"
+        "./node_modules/axe-core/axe.min.js",
+        "./node_modules/@sparticuz/chromium/bin/**/*"
       ]
     }
   }
