@@ -31,23 +31,31 @@ export async function runBrowserAudit(url: string) {
       }))
     ]);
 
-    const axe = await new AxeBuilder({ page }).analyze();
-    const accessibilityFindings: Finding[] = axe.violations.slice(0, 15).map((violation) => ({
-      id: `axe-${violation.id}`,
-      category: "accessibility",
-      title: violation.help,
-      summary: violation.description,
-      recommendation: violation.helpUrl
-        ? `Resolve the affected elements and verify against the rule guidance: ${violation.helpUrl}`
-        : "Resolve the affected elements and re-run accessibility testing.",
-      severity: violation.impact === "critical" ? "critical" : violation.impact === "serious" ? "high" : violation.impact === "moderate" ? "medium" : "low",
-      evidence: { affectedNodes: violation.nodes.length, tags: violation.tags }
-    }));
+    let accessibilityFindings: Finding[] = [];
+    let accessibilityScore: number | null = null;
+    let accessibilityMessage: string | undefined;
 
-    const accessibilityScore = Math.max(0, 100 - accessibilityFindings.reduce((total, finding) => {
-      const penalty = finding.severity === "critical" ? 12 : finding.severity === "high" ? 8 : finding.severity === "medium" ? 4 : 2;
-      return total + penalty;
-    }, 0));
+    try {
+      const axe = await new AxeBuilder({ page }).analyze();
+      accessibilityFindings = axe.violations.slice(0, 15).map((violation) => ({
+        id: `axe-${violation.id}`,
+        category: "accessibility",
+        title: violation.help,
+        summary: violation.description,
+        recommendation: violation.helpUrl
+          ? `Resolve the affected elements and verify against the rule guidance: ${violation.helpUrl}`
+          : "Resolve the affected elements and re-run accessibility testing.",
+        severity: violation.impact === "critical" ? "critical" : violation.impact === "serious" ? "high" : violation.impact === "moderate" ? "medium" : "low",
+        evidence: { affectedNodes: violation.nodes.length, tags: violation.tags }
+      }));
+
+      accessibilityScore = Math.max(0, 100 - accessibilityFindings.reduce((total, finding) => {
+        const penalty = finding.severity === "critical" ? 12 : finding.severity === "high" ? 8 : finding.severity === "medium" ? 4 : 2;
+        return total + penalty;
+      }, 0));
+    } catch (error) {
+      accessibilityMessage = error instanceof Error ? error.message : "Accessibility audit failed.";
+    }
 
     const uxFindings: Finding[] = [];
     let uxPenalty = 0;
@@ -80,6 +88,8 @@ export async function runBrowserAudit(url: string) {
         screenshotDataUrl: `data:image/jpeg;base64,${screenshot.toString("base64")}`
       },
       accessibilityScore,
+      accessibilityOk: accessibilityScore !== null,
+      accessibilityMessage,
       uxScore: Math.max(0, 100 - uxPenalty),
       findings: [...accessibilityFindings, ...uxFindings]
     };
