@@ -7,7 +7,13 @@ export async function runBrowserAudit(url: string) {
   const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
 
   try {
-    await page.goto(url, { waitUntil: "networkidle", timeout: 45_000 });
+    await page.goto(url, { waitUntil: "domcontentloaded", timeout: 30_000 });
+
+    // Real production sites often keep analytics, chat, or streaming requests open,
+    // so waiting for networkidle can time out even when the page is fully usable.
+    // Give the page a short opportunity to finish loading, then continue the audit.
+    await page.waitForLoadState("load", { timeout: 10_000 }).catch(() => undefined);
+    await page.waitForTimeout(1_500);
 
     const [title, description, screenshot, uxSignals] = await Promise.all([
       page.title(),
