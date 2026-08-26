@@ -18,7 +18,7 @@ export async function runBrowserAudit(url: string) {
 
     const [title, description, screenshot, uxSignals] = await Promise.all([
       page.title(),
-      page.locator('meta[name="description"]').getAttribute("content"),
+      page.evaluate(() => document.querySelector('meta[name="description"]')?.getAttribute("content") ?? null),
       page.screenshot({ fullPage: true, type: "jpeg", quality: 55 }),
       page.evaluate(() => ({
         h1Count: document.querySelectorAll("h1").length,
