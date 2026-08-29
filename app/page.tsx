@@ -153,6 +153,10 @@ export default function HomePage() {
           </article>
         </section>
       )}
+
+      <footer className="siteFooter">
+        <p>© {new Date().getFullYear()} Allure Web Designs. All rights reserved.</p>
+      </footer>
     </main>
   );
 }
