@@ -4,6 +4,8 @@ body { margin: 0; background: #f5f5f2; color: #151515; font-family: Inter, ui-sa
 button, input { font: inherit; }
 .shell { width: min(1160px, calc(100% - 40px)); margin: 0 auto; padding: 72px 0 96px; }
 .hero { max-width: 850px; margin-bottom: 48px; }
+.brandLockup { width: min(380px, 82vw); margin: 0 0 34px -12px; }
+.brandLockup img { display: block; width: 100%; height: auto; }
 .eyebrow { margin: 0 0 10px; font-size: 12px; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; color: #62625d; }
 h1 { max-width: 820px; margin: 0; font-size: clamp(42px, 7vw, 78px); line-height: .98; letter-spacing: -.055em; }
 .lede { max-width: 720px; margin: 24px 0 0; font-size: 20px; line-height: 1.55; color: #5b5b56; }
@@ -47,4 +49,4 @@ h1 { max-width: 820px; margin: 0; font-size: clamp(42px, 7vw, 78px); line-height
 .siteFooter { margin-top: 64px; padding-top: 22px; border-top: 1px solid #e5e5df; }
 .siteFooter p { margin: 0; color: #8c8c86; font-size: 13px; }
 @media (max-width: 900px) { .scoreGrid { grid-template-columns: repeat(3, 1fr); } .toolGrid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 620px) { .shell { width: min(100% - 24px, 1160px); padding-top: 42px; } .auditForm, .summaryCard { flex-direction: column; align-items: stretch; } .auditForm button { width: 100%; } .scoreGrid, .toolGrid { grid-template-columns: repeat(2, 1fr); } .summaryCard { gap: 18px; } }
+@media (max-width: 620px) { .shell { width: min(100% - 24px, 1160px); padding-top: 42px; } .brandLockup { margin-bottom: 28px; } .auditForm, .summaryCard { flex-direction: column; align-items: stretch; } .auditForm button { width: 100%; } .scoreGrid, .toolGrid { grid-template-columns: repeat(2, 1fr); } .summaryCard { gap: 18px; } }

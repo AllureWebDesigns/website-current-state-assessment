@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import Image from "next/image";
 import type { AssessmentResult, Severity } from "@/lib/types";
 
 const severityLabel: Record<Severity, string> = {
@@ -57,7 +58,15 @@ export default function HomePage() {
   return (
     <main className="shell">
       <section className="hero">
-        <p className="eyebrow">Website Current State Assessment</p>
+        <div className="brandLockup">
+          <Image
+            src="/current-state-logo.svg"
+            alt="Current State — Website Assessment"
+            width={760}
+            height={160}
+            priority
+          />
+        </div>
         <h1>Turn a website URL into a prioritized client assessment.</h1>
         <p className="lede">Performance, technical SEO, accessibility, security posture, and conversion-oriented UX signals in one report.</p>
 

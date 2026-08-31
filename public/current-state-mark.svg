@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" fill="none" role="img" aria-labelledby="title desc">
+  <title id="title">Current State mark</title>
+  <desc id="desc">A browser window with a diagnostic checkmark.</desc>
+  <rect width="512" height="512" rx="104" fill="#151515"/>
+  <rect x="112" y="112" width="288" height="288" rx="44" stroke="#F5F5F2" stroke-width="24"/>
+  <path d="M124 190H388" stroke="#F5F5F2" stroke-width="24"/>
+  <circle cx="158" cy="151" r="13" fill="#F5F5F2"/>
+  <circle cx="199" cy="151" r="13" fill="#F5F5F2"/>
+  <path d="M165 297L216 348L350 232" stroke="#F5F5F2" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
